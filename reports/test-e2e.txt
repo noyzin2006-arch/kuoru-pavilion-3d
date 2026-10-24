@@ -2,3 +2,6 @@
 > kuoru-pavilion-3d@1.0.0 test:e2e
 > playwright test
 
+
+Running 20 tests using 1 worker
+
