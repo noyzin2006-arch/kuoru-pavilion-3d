@@ -187,6 +187,17 @@
 2. 加**晕色**（石青→石绿过渡）与局部**点金**小圆点；
 3. 按间做**箍头—藻头—枋心—藻头—箍头**的真实比例分带，而不是等分三段。
 
+## 性能预算实测（真实 GPU）
+
+在 `/tmp/three-probe` 搭了一个压力场景：2400 个 InstancedMesh 斗栱体块 + 2048² 软阴影 +
+PMREM 程序化天空 IBL + EffectComposer（RenderPass + UnrealBloom + OutputPass）+ 1440×900。
+
+- 渲染器：`ANGLE (Apple, ANGLE Metal Renderer: Apple M5 Max)`
+- **FPS：稳定 120（显示器刷新率上限）**，首秒 33（着色器编译预热）
+- 结论：Apple Silicon 上余量极大；**瓶颈不在三角面，而在填充率与后处理**。
+- 落地含义：① 斗栱/椽子/瓦垄一律用 InstancedMesh；② 后处理（Bloom/DOF/SSAO）按画质档位分级，
+  低端设备自动降级；③ 阴影贴图 2048² 足够，不要上 4096²。
+
 ## 冲突与处理
 
 
