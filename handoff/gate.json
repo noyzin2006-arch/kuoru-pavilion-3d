@@ -1,8 +1,22 @@
 {
-  "task": "",
+  "task": "KRT-001",
   "round1": {
-    "brief": "",
-    "plan": "",
-    "guardedPaths": []
+    "brief": "handoff/briefs/KRT-001.md",
+    "plan": "handoff/plans/KRT-001.md",
+    "guardedPaths": [
+      "src/",
+      "public/",
+      "assets/",
+      "data/",
+      "tests/",
+      "e2e/",
+      "scripts/",
+      "index.html",
+      "package.json",
+      "package-lock.json",
+      "vite.config.js",
+      "vite.config.ts",
+      "playwright.config.js"
+    ]
   }
 }
