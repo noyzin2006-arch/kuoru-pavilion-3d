@@ -146,6 +146,27 @@
 
 > 照片色已含环境光与曝光偏差，落地时应取上表「建议基色」并按 PBR 参数（roughness / metalness）调。
 
+## 本机字体可用性（canvas 像素级实测，非目测）
+
+方法：在 Chromium canvas 上用同一字符串分别以各候选字族渲染，取 ImageData 的
+墨迹像素数与签名哈希，**与「不存在的字族」基线比对**——字形不同才算真正生效。
+
+| 字族 | 结论 | 用途 |
+|---|---|---|
+| **Kai** | ✅ 生效（楷体，macOS 14+ 新名） | **匾额书法「廓如亭」首选** |
+| Kaiti SC / STKaiti | ✅ 生效（与 Kai 同源旧名，签名一致） | 旧系统回退 |
+| Songti SC | ✅ 生效（宋体） | 竖排文样、引文 |
+| PingFang SC | ✅ 生效 | UI 正文首选 |
+| Hiragino Sans GB | ✅ 生效 | UI 回退 |
+| STHeiti | ✅ 生效 | 回退 |
+| Hiragino Mincho ProN | ✅ 生效 | 明朝体衬线 |
+| Songti（不带 SC） | ⚠️ 不生效（回退到默认） | 不要用 |
+
+**落地建议**：
+- 匾额/书法贴图：`"Kai", "Kaiti SC", "STKaiti", serif`
+- UI 字体栈：`"PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif`
+- 字体是系统字体 → **零外部请求**，符合「不引 CDN」的约束。
+
 ## 冲突与处理
 
 
