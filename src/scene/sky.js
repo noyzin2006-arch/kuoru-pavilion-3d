@@ -104,8 +104,13 @@ export function setSolarLighting(atmos, time, season) {
   atmos.sun.target.position.set(0, 0, 0);
   atmos.sun.target.updateMatrixWorld();
 
-  atmos.ambient.intensity = time === 'night' ? 0.32 : 0.85;
-  if (atmos.fill) atmos.fill.intensity = time === 'night' ? 0.12 : 0.45;
+  // 各时刻的环境强度：夜景必须明显区别于白天（否则 PMREM 的亮天空会把场景照成白天）
+  const ambientByTime = { dawn: 0.42, noon: 0.85, dusk: 0.36, night: 0.18 };
+  const fillByTime = { dawn: 0.3, noon: 0.45, dusk: 0.26, night: 0.08 };
+  const envByTime = { dawn: 0.72, noon: 1.0, dusk: 0.6, night: 0.3 };
+  atmos.ambient.intensity = ambientByTime[time] ?? 0.85;
+  if (atmos.fill) atmos.fill.intensity = fillByTime[time] ?? 0.45;
+  const envIntensity = envByTime[time] ?? 1.0;
   atmos.ambient.color.setHex(seasonCfg.leaf).lerp(new THREE.Color(0xbcd6ff), 0.55);
 
   const u = atmos.sky.material.uniforms;
@@ -113,8 +118,15 @@ export function setSolarLighting(atmos, time, season) {
   u.rayleigh.value = time === 'dusk' || time === 'dawn' ? 3.0 : 2.1;
   u.mieCoefficient.value = time === 'dusk' || time === 'dawn' ? 0.008 : 0.005;
   u.sunPosition.value.set(s.x, s.y, s.z);
+  // 夜空：大气模型在太阳落到地平线下时仍给出亮天空，改为不显示 Sky（由场景暗色背景接管）
+  atmos.sky.visible = time !== 'night';
 
-  return { exposure: TIME_OF_DAY[time].exposure, lamp: s.lamp, fog: seasonCfg.fog };
+  return {
+    exposure: TIME_OF_DAY[time].exposure,
+    lamp: s.lamp,
+    fog: seasonCfg.fog,
+    envIntensity,
+  };
 }
 
 /**
@@ -138,13 +150,26 @@ export function rebuildPMREM(renderer, skyScene, previousTexture = null, previou
 }
 
 /**
- * 檐下暖色灯（夜景艺术照明，不声称历史装灯）。
- * @param {number} intensity
- * @returns {THREE.PointLight|null}
+ * 檐下暖色灯（夜景**艺术照明**，不声称历史装灯）。
+ *
+ * 按「檐下灯」做成檐下一圈多盏，而不是中心一盏：
+ * 单盏中心灯只能照亮地面，檐下的柱网与斗栱仍是黑的；
+ * 环形布灯才能让夜间仍能读出八角双檐的结构。
+ *
+ * @param {number} intensity 单盏强度
+ * @param {number} [radius] 灯环半径
+ * @returns {THREE.Group|null}
  */
-export function makeLampLight(intensity) {
+export function makeLampLight(intensity, radius = 10.5) {
   if (!intensity) return null;
-  const light = new THREE.PointLight(0xffb877, intensity, 26, 2);
-  light.position.set(0, 4.4, 0);
-  return light;
+  const group = new THREE.Group();
+  group.name = 'eave-lamps';
+  const count = 6;
+  for (let i = 0; i < count; i += 1) {
+    const a = (i / count) * Math.PI * 2 + Math.PI / 8;
+    const light = new THREE.PointLight(0xffb877, intensity * 2.4, 24, 2);
+    light.position.set(Math.sin(a) * radius, 5.0, Math.cos(a) * radius);
+    group.add(light);
+  }
+  return group;
 }

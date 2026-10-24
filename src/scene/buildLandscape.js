@@ -277,7 +277,7 @@ function buildTrees(count, materials, L) {
 
   const trunkGeo = new THREE.CylinderGeometry(0.16, 0.24, 2.6, 6);
   trunkGeo.translate(0, 1.3, 0);
-  const crownGeo = new THREE.IcosahedronGeometry(1.9, 1);
+  const crownGeo = new THREE.IcosahedronGeometry(1.5, 1);
   crownGeo.translate(0, 3.4, 0);
 
   const trunks = new THREE.InstancedMesh(trunkGeo, materials.foliage, count);
@@ -285,18 +285,16 @@ function buildTrees(count, materials, L) {
   const dummy = new THREE.Object3D();
 
   for (let i = 0; i < count; i += 1) {
-    // 沿东堤两侧与湖岸散布
-    const onDike = rand() < 0.55;
-    let x;
-    let z;
-    if (onDike) {
-      x = L.dikeWidth / 2 - 6 - 5 - rand() * 10;
+    // 只种在东堤的陆地一侧，且必须避开亭身与月台（半径 22m 内不种树）
+    let x = 0;
+    let z = 0;
+    for (let tries = 0; tries < 40; tries += 1) {
+      const eastSide = rand() < 0.6;
+      x = eastSide ? 12.5 + rand() * 6 : -5.5 + rand() * 17;
       z = (rand() - 0.5) * L.dikeLength * 1.9;
-    } else {
-      x = -12 - rand() * 120;
-      z = (rand() - 0.5) * L.dikeLength * 2.4;
+      if (Math.hypot(x, z) > 22) break;
     }
-    const scale = 0.75 + fbm(x * 0.02, z * 0.02, 2) * 0.9;
+    const scale = 0.6 + fbm(x * 0.02, z * 0.02, 2) * 0.7;
     dummy.position.set(x, 0, z);
     dummy.rotation.set(0, rand() * Math.PI * 2, 0);
     dummy.scale.setScalar(scale);

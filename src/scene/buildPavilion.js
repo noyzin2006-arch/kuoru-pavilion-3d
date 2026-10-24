@@ -331,7 +331,12 @@ export function buildPavilion(config, resources, opts = {}) {
   const metrics = {
     tileCount: lower.tileCount + upper.tileCount,
     columnCount: columns.length,
+    totalColumns: columns.length,
+    roundColumns: columns.filter((c) => c.kind === 'round').length,
+    squareColumns: columns.filter((c) => c.kind === 'square').length,
     ridgeTopY: config.roof.finial.topY,
+    platformSide: config.platform.side,
+    columnHeight: config.columns.height,
   };
 
   const dispose = () => {

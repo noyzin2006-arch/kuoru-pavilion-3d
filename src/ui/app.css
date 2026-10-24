@@ -295,6 +295,9 @@ p {
   bottom: var(--space-6);
   transform: translateX(-50%);
   display: flex;
+  /* 预留 5 个 44px 按钮 + 4 个 8px 间隙：JS 注入图标前后尺寸不变，消除布局位移 */
+  min-width: 252px;
+  justify-content: center;
   gap: var(--space-2);
   padding: var(--space-2);
   background: var(--bg-panel);
@@ -549,23 +552,13 @@ p {
 
 /* ---------------------------------------------------------------- 详情面板 */
 
+/* 桌面：详情在右栏流内，绝不覆盖右侧控制区（规划案 §4「右侧 320px 控制区域不可覆盖」） */
 .detail-panel {
-  position: fixed;
-  right: var(--space-6);
-  bottom: var(--space-6);
-  width: 320px;
-  max-height: 62dvh;
+  margin-top: var(--space-4);
+  padding-top: var(--space-4);
+  border-top: var(--line);
   overflow-y: auto;
-  background: var(--bg-raised);
-  border: var(--line);
-  border-radius: var(--radius-card);
-  box-shadow: var(--shadow-3);
-  padding: var(--space-6);
-  z-index: var(--z-panel);
-}
-
-.detail-panel[hidden] {
-  display: none;
+  max-height: 62dvh;
 }
 
 .detail-panel__head {
@@ -574,6 +567,10 @@ p {
   justify-content: space-between;
   gap: var(--space-2);
   margin-bottom: var(--space-3);
+}
+
+.detail-panel[hidden] {
+  display: none;
 }
 
 .detail-panel__head h2 {
@@ -618,6 +615,17 @@ p {
 }
 
 /* ---------------------------------------------------------------- 对话框 */
+
+.detail-scrim {
+  position: fixed;
+  inset: 0;
+  background: rgb(23 43 42 / 35%);
+  z-index: calc(var(--z-panel) - 1);
+}
+
+.detail-scrim[hidden] {
+  display: none;
+}
 
 .dialog-scrim {
   position: fixed;
@@ -721,13 +729,26 @@ p {
 }
 
 @media (max-width: 1023px) {
+  /* 显式网格行：右侧控件的高度变化不会顶动左下方的来源面板（消除 CLS） */
   .layout {
     grid-template-columns: minmax(0, 1fr) var(--panel-right-md);
+    grid-template-rows: auto auto;
+  }
+
+  .stage {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .panel--controls {
+    grid-column: 2;
+    grid-row: 1 / span 2;
   }
 
   .panel--sources {
-    grid-column: 1 / -1;
-    order: 3;
+    grid-column: 1;
+    grid-row: 2;
+    order: 0;
   }
 
   .panel--sources .panel__note {
@@ -756,21 +777,43 @@ p {
     min-height: 0;
   }
 
+  .layout {
+    grid-template-rows: auto auto auto;
+  }
+
+  .stage {
+    grid-column: 1;
+    grid-row: 1;
+    order: 0;
+  }
+
+  /* 来源面板在控件之前：控件区由 JS 注入后变高时，下方没有任何元素被推动 */
+  .panel--sources {
+    grid-column: 1;
+    grid-row: 2;
+    order: 1;
+  }
+
   .panel--controls {
+    grid-column: 1;
+    grid-row: 3;
     order: 2;
   }
 
-  .panel--sources {
-    order: 3;
-  }
-
   .detail-panel {
+    position: fixed;
     left: 0;
     right: 0;
     bottom: 0;
     width: 100%;
     max-height: 65dvh;
+    margin: 0;
+    padding: var(--space-4);
+    background: var(--bg-raised);
+    border-top: var(--line);
     border-radius: var(--radius-dialog) var(--radius-dialog) 0 0;
+    box-shadow: var(--shadow-3);
+    z-index: var(--z-panel);
   }
 }
 

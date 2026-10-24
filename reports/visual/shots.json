@@ -1,0 +1,61 @@
+{
+  "generatedAt": "2026-10-24T18:54:25.146Z",
+  "base": "http://127.0.0.1:61446/",
+  "shots": [
+    {
+      "name": "loading-desktop",
+      "note": "加载态：模型尚未建立时的界面",
+      "file": "/Users/sheng/.minimax/sessions/mvs_80c40f7d220b441f8314098e5ea2427e/workspace/kuoru-pavilion-3d/reports/visual/loading-desktop.png"
+    },
+    {
+      "name": "01-spring-noon-south",
+      "note": "春 · 正午 · 正南机位",
+      "file": "/Users/sheng/.minimax/sessions/mvs_80c40f7d220b441f8314098e5ea2427e/workspace/kuoru-pavilion-3d/reports/visual/01-spring-noon-south.png"
+    },
+    {
+      "name": "02-autumn-dusk-overview",
+      "note": "秋 · 黄昏 · 总览",
+      "file": "/Users/sheng/.minimax/sessions/mvs_80c40f7d220b441f8314098e5ea2427e/workspace/kuoru-pavilion-3d/reports/visual/02-autumn-dusk-overview.png"
+    },
+    {
+      "name": "03-winter-night",
+      "note": "冬 · 夜",
+      "file": "/Users/sheng/.minimax/sessions/mvs_80c40f7d220b441f8314098e5ea2427e/workspace/kuoru-pavilion-3d/reports/visual/03-winter-night.png"
+    },
+    {
+      "name": "04-caojing-interior",
+      "note": "藻井仰视机位",
+      "file": "/Users/sheng/.minimax/sessions/mvs_80c40f7d220b441f8314098e5ea2427e/workspace/kuoru-pavilion-3d/reports/visual/04-caojing-interior.png"
+    },
+    {
+      "name": "05-explode-100",
+      "note": "分解 100%：屋面、枋梁、坐凳逐层拉开",
+      "file": "/Users/sheng/.minimax/sessions/mvs_80c40f7d220b441f8314098e5ea2427e/workspace/kuoru-pavilion-3d/reports/visual/05-explode-100.png"
+    },
+    {
+      "name": "06-section-50",
+      "note": "剖切 50%：竖直剖面看内部柱网",
+      "file": "/Users/sheng/.minimax/sessions/mvs_80c40f7d220b441f8314098e5ea2427e/workspace/kuoru-pavilion-3d/reports/visual/06-section-50.png"
+    },
+    {
+      "name": "07-empty-detail",
+      "note": "空态：详情面板未选中构件时的引导文案",
+      "file": "/Users/sheng/.minimax/sessions/mvs_80c40f7d220b441f8314098e5ea2427e/workspace/kuoru-pavilion-3d/reports/visual/07-empty-detail.png"
+    },
+    {
+      "name": "08-mobile-default",
+      "note": "375px 默认视图",
+      "file": "/Users/sheng/.minimax/sessions/mvs_80c40f7d220b441f8314098e5ea2427e/workspace/kuoru-pavilion-3d/reports/visual/08-mobile-default.png"
+    },
+    {
+      "name": "09-mobile-detail",
+      "note": "375px 构件详情（底部 sheet）",
+      "file": "/Users/sheng/.minimax/sessions/mvs_80c40f7d220b441f8314098e5ea2427e/workspace/kuoru-pavilion-3d/reports/visual/09-mobile-detail.png"
+    },
+    {
+      "name": "10-error-webgl-unavailable",
+      "note": "错误态：WebGL2 不可用时的文字结构说明",
+      "file": "/Users/sheng/.minimax/sessions/mvs_80c40f7d220b441f8314098e5ea2427e/workspace/kuoru-pavilion-3d/reports/visual/10-error-webgl-unavailable.png"
+    }
+  ]
+}

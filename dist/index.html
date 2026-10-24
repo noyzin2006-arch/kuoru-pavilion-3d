@@ -9,8 +9,8 @@
       content="颐和园廓如亭实时三维数字复原：八角重檐攒尖亭的程序化三维重建，非激光扫描成果。"
     />
     <title>廓如亭 · 结构复原｜颐和园实时三维数字复原</title>
-    <script type="module" crossorigin src="./assets/index-Bcv-9v7l.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-oln0QoyY.css">
+    <script type="module" crossorigin src="./assets/index-EY45afq7.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-BpDnK65X.css">
   </head>
   <body>
     <a class="skip-link" href="#scene-region">跳到三维场景</a>
@@ -69,22 +69,25 @@
       <aside class="panel panel--controls" aria-labelledby="controls-heading">
         <h2 id="controls-heading" class="panel__heading">场景控制</h2>
         <div id="controls-root"></div>
+
+        <!-- 构件详情（桌面在右栏流内，移动为底部 sheet） -->
+        <aside
+          class="detail-panel"
+          id="detail-panel"
+          aria-labelledby="detail-heading"
+          hidden
+        >
+          <div class="detail-panel__head">
+            <h2 id="detail-heading">构件详情</h2>
+            <button class="icon-button" id="detail-close" type="button" aria-label="关闭构件详情"></button>
+          </div>
+          <div class="detail-panel__body" id="detail-body"></div>
+        </aside>
       </aside>
     </main>
 
-    <!-- 构件详情（桌面右侧 / 移动底部 sheet） -->
-    <aside
-      class="detail-panel"
-      id="detail-panel"
-      aria-labelledby="detail-heading"
-      hidden
-    >
-      <div class="detail-panel__head">
-        <h2 id="detail-heading">构件详情</h2>
-        <button class="icon-button" id="detail-close" type="button" aria-label="关闭构件详情"></button>
-      </div>
-      <div class="detail-panel__body" id="detail-body"></div>
-    </aside>
+    <!-- 移动端构件详情的模态遮罩 -->
+    <div class="detail-scrim" id="detail-scrim" hidden></div>
 
     <!-- 首次引导 -->
     <div class="dialog-scrim" id="guide-scrim" hidden></div>

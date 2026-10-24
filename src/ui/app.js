@@ -10,7 +10,7 @@
  */
 
 import * as THREE from 'three';
-import { createInitialState, reduceState, actionError } from '../core/state.js';
+import { createInitialState, reduceState, actionError, serializeSafeState } from '../core/state.js';
 import { listParts, getPart, isKnownPart, listSources } from '../core/catalog.js';
 import { PAVILION_CONFIG, CAMERA_PRESETS, SEASONS } from '../core/geometry.js';
 import { makeProceduralMaterials, disposeMaterials } from '../scene/materials.js';
@@ -79,13 +79,18 @@ export function createExhibit(dom) {
   const applyEnvironment = () => {
     const result = setSolarLighting(atmos, state.time, state.season);
     renderer.toneMappingExposure = result.exposure;
+    scene.environmentIntensity = result.envIntensity;
+    // 夜幕：Sky 模型不适用于夜间，改用暗色背景 + 暗雾
+    const night = state.time === 'night';
+    scene.background = night ? new THREE.Color(0x0b1622) : null;
+    if (scene.fog) scene.fog.color.set(night ? 0x0d1a26 : 0xcfd8d2);
     if (lamp) {
       scene.remove(lamp);
       lamp.dispose();
       lamp = null;
     }
     if (result.lamp > 0) {
-      lamp = makeLampLight(result.lamp);
+      lamp = makeLampLight(result.lamp, PAVILION_CONFIG.footprint.circumradius * 0.9);
       scene.add(lamp);
     }
     const seasonCfg = SEASONS[state.season];
@@ -121,6 +126,7 @@ export function createExhibit(dom) {
   const statusEl = document.getElementById('stage-status');
   const controlsRoot = document.getElementById('controls-root');
   const sourceBody = document.getElementById('source-body');
+  const detailScrim = document.getElementById('detail-scrim');
   const guideDialog = document.getElementById('guide-dialog');
   const guideScrim = document.getElementById('guide-scrim');
   const toastEl = document.getElementById('toast');
@@ -161,6 +167,16 @@ export function createExhibit(dom) {
   const presets = createCameraPresets((preset) => dispatch({ type: 'SET_PRESET', preset }));
   controlsRoot.appendChild(presets.el);
 
+  /* ------------------------------------------------------------ 重置 */
+  const resetBtn = el('button', 'button', { type: 'button', text: '重置视图与结构' });
+  resetBtn.addEventListener('click', () => {
+    dispatch({ type: 'RESET' });
+    toast.show('已恢复默认：春季·正午·总览');
+  });
+  const resetWrap = el('div', 'control');
+  resetWrap.appendChild(resetBtn);
+  controlsRoot.appendChild(resetWrap);
+
   /* ------------------------------------------------------------ 视角工具 */
   const viewTools = createViewTools({
     onRotate: (deg) => rotateCamera(deg),
@@ -185,6 +201,18 @@ export function createExhibit(dom) {
     hotspotLayer.appendChild(btn);
     hotspotButtons.set(rec.id, btn);
   }
+
+  /* 移动端详情为模态 sheet：遮罩点击与 Esc 均可关闭（规划案 C06） */
+  if (detailScrim) {
+    detailScrim.addEventListener('click', () => dispatch({ type: 'CLOSE_OVERLAY' }));
+  }
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape') return;
+    if (detailScrim && !detailScrim.hidden) {
+      e.preventDefault();
+      dispatch({ type: 'CLOSE_OVERLAY' });
+    }
+  });
 
   /* ------------------------------------------------------------ 首次引导 */
   const guide = createGuide(guideDialog, guideScrim, () => {
@@ -216,6 +244,8 @@ export function createExhibit(dom) {
     off.applyAxisAngle(new THREE.Vector3(0, 1, 0), a);
     cam.position.copy(t).add(off);
     rig.controls.update();
+    rig.constrainCamera();
+    rig.sanitize();
     stage.requestRender('rotate');
   }
 
@@ -227,6 +257,8 @@ export function createExhibit(dom) {
     off.setLength(d);
     cam.position.copy(t).add(off);
     rig.controls.update();
+    rig.constrainCamera();
+    rig.sanitize();
     stage.requestRender('zoom');
   }
 
@@ -288,6 +320,8 @@ export function createExhibit(dom) {
     off.setFromSpherical(sph);
     cam.position.copy(t).add(off);
     rig.controls.update();
+    rig.constrainCamera();
+    rig.sanitize();
     stage.requestRender('tilt');
   }
 
@@ -302,6 +336,7 @@ export function createExhibit(dom) {
     t.addScaledVector(right, dx);
     t.addScaledVector(forward, dz);
     rig.constrainCamera();
+    rig.sanitize();
     stage.requestRender('pan');
   }
 
@@ -324,8 +359,21 @@ export function createExhibit(dom) {
 
   /* ------------------------------------------------------------ 渲染 */
   let lastPreset = null;
+  /** 时刻/季节变化时重建光照与 IBL（规划案 §5.3：防抖 300ms，单时刻最多一次） */
+  let envKey = `${state.time}|${state.season}`;
+  let envTimer = 0;
+  function scheduleEnvironment() {
+    const key = `${state.time}|${state.season}`;
+    if (key === envKey) return;
+    envKey = key;
+    window.clearTimeout(envTimer);
+    envTimer = window.setTimeout(() => applyEnvironment(), 300);
+  }
 
   function render() {
+    // 时刻/季节 → 重新计算太阳、环境光、雾与 IBL
+    scheduleEnvironment();
+
     // 镜头：仅在预设变化时重新过渡，避免其它状态变化时二次跳跃
     if (state.preset && state.preset !== lastPreset) {
       lastPreset = state.preset;
@@ -340,9 +388,12 @@ export function createExhibit(dom) {
     // 剖切
     applySection(renderer, pavilion.materials, state.section, state.sectionEnabled);
 
-    // 详情
+    // 详情：桌面端常驻（无选中时显示空态文案），移动端仅在选中时展开为底部 sheet
     const rec = state.selectedPartId ? getPart(state.selectedPartId) : null;
-    detailPanel.hidden = !(rec && state.detailOpen);
+    const wide = window.matchMedia('(min-width: 768px)').matches;
+    const sheetOpen = !wide && Boolean(rec && state.detailOpen);
+    detailPanel.hidden = wide ? false : !(rec && state.detailOpen);
+    if (detailScrim) detailScrim.hidden = !sheetOpen;
     detail.render(rec);
 
     // 控件同步
@@ -394,20 +445,44 @@ export function createExhibit(dom) {
   dispatch({ type: 'READY' });
   toast.show('廓如亭模型就绪，拖动旋转、滚轮缩放');
 
-  /* ------------------------------------------------------------ 暴露给测试 */
+  /* ------------------------------------------------------------ 暴露只读测试探针 */
+  /**
+   * 规划案 §8：生产环境**只暴露只读探针**，不暴露写状态的后门。
+   * 探针返回的都是拷贝，外部无法借此改变展厅状态。
+   */
   const api = {
-    get state() {
-      return state;
+    get phase() {
+      return state.phase;
     },
-    dispatch,
-    renderer,
-    scene,
-    rig,
-    pavilion,
-    landscape,
-    parts,
-    rotateCamera,
-    zoomCamera,
+    getState() {
+      return serializeSafeState(state);
+    },
+    getMetrics() {
+      return { ...pavilion.metrics, parts: pavilion.parts.size };
+    },
+    getRenderCalls() {
+      return renderer.info.render.calls;
+    },
+    /** 镜头预设过渡是否仍在进行（供 e2e 等待过渡真正结束，而非猜固定时长） */
+    isAnimating() {
+      return rig.animating;
+    },
+    getMemory() {
+      return { ...renderer.info.memory };
+    },
+    getCamera() {
+      return {
+        position: rig.camera.position.toArray(),
+        target: rig.controls.target.toArray(),
+        fov: rig.camera.fov,
+      };
+    },
+    getPartIds() {
+      return [...pavilion.parts.keys()];
+    },
+    getHotspotCount() {
+      return parts.length;
+    },
     toggleHelp: () => guide.open(),
     destroy() {
       pavilion.dispose();

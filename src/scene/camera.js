@@ -41,6 +41,34 @@ export function createCameraRig(renderer, domElement) {
 
   let animation = null;
   let mode = 'normal';
+  /** 上一次确认有效的相机与目标，用于异常回滚。 */
+  let lastGood = {
+    eye: new THREE.Vector3(...CAMERA_PRESETS.overview.eye),
+    target: new THREE.Vector3(...CAMERA_PRESETS.overview.target),
+  };
+
+  /**
+   * 相机状态守卫（规划案 §8：OrbitControls.update() 后检查 camera/target 非 NaN、bounds 未超）。
+   * 任何手写镜头操作或阻尼插值产生非有限值时，回滚到上一次确认有效的状态。
+   * @returns {boolean} 是否发生了回滚
+   */
+  function sanitize() {
+    const p = camera.position;
+    const t = controls.target;
+    const bad =
+      !Number.isFinite(p.x) || !Number.isFinite(p.y) || !Number.isFinite(p.z) ||
+      !Number.isFinite(t.x) || !Number.isFinite(t.y) || !Number.isFinite(t.z) ||
+      p.distanceTo(t) < 0.05; // 相机与目标重合时轨道会退化
+    if (!bad) {
+      lastGood.eye.copy(p);
+      lastGood.target.copy(t);
+      return false;
+    }
+    p.copy(lastGood.eye);
+    t.copy(lastGood.target);
+    controls.update();
+    return true;
+  }
 
   const cancelAnimation = () => {
     animation = null;
@@ -72,15 +100,23 @@ export function createCameraRig(renderer, domElement) {
     animation = { fromEye, fromTarget, toEye, toTarget, start: performance.now(), duration: durationMs };
   }
 
-  /** 每帧推进镜头动画。 */
-  function update(now) {
+  /**
+   * 每帧推进镜头动画。
+   *
+   * 时钟说明：用 `performance.now()` 而不是 rAF 帧时间戳。
+   * rAF 的时间戳是**该帧开始**的时刻，可能早于 applyPreset 被调用的时刻
+   * （慢渲染时更明显），导致 `now - start` 为负、过渡进度恒为 0，
+   * 镜头会卡在起点。两个时钟同源，用 performance.now() 才能保证进度单调。
+   */
+  function update() {
     if (!animation) return false;
-    const t = Math.min(1, (now - animation.start) / animation.duration);
+    const t = Math.min(1, Math.max(0, (performance.now() - animation.start) / animation.duration));
     const e = EASE(t);
     camera.position.lerpVectors(animation.fromEye, animation.toEye, e);
     controls.target.lerpVectors(animation.fromTarget, animation.toTarget, e);
     controls.update();
     if (t >= 1) animation = null;
+    sanitize();
     return true;
   }
 
@@ -129,6 +165,7 @@ export function createCameraRig(renderer, domElement) {
     update,
     setMode,
     constrainCamera,
+    sanitize,
     get mode() {
       return mode;
     },

@@ -1,0 +1,4 @@
+
+> kuoru-pavilion-3d@1.0.0 test:e2e
+> playwright test
+

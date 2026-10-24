@@ -14,3 +14,6 @@ id_rsa*
 id_ed25519*
 *.db
 *.sqlite3
+dist/
+test-results/
+playwright-report/

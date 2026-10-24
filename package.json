@@ -14,7 +14,11 @@
     "serve": "node scripts/serve-static.mjs",
     "test": "node --test \"tests/*.test.js\"",
     "test:e2e": "playwright test",
-    "verify": "npm run build && npm test"
+    "verify": "npm run build && npm test",
+    "capture:visual": "node tools/capture-visual.mjs --dist dist --out reports/visual",
+    "perf": "node tools/perf.mjs --dist dist --out reports/perf.json",
+    "verify:geometry": "node tools/verify-geometry.mjs handoff/research/KRT-001-candidate-spec.json",
+    "verify:contrast": "node tools/contrast.mjs --pairs tools/contrast-pairs.json"
   },
   "dependencies": {
     "three": "0.186.1"
