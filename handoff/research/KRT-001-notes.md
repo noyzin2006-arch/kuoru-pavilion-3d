@@ -48,6 +48,30 @@
 ### 廊檐细部（新增）
 - 外柱间有**倒挂楣子、坐凳楣子**；外有矮墙（宇墙）围绕，**东南西北各有一出口**。
 
+## 本机链路自测结论（仓库外 `/tmp/three-probe` 实测，非本仓库实现）
+
+在等规划案期间，先把整条技术链路在本机跑通，避免实现阶段踩坑：
+
+- `three@0.186.1` + `vite@8.3.5`：构建成功，产物 `index.html` + 单个 JS chunk **550 KB（gzip 137 KB）**；
+  Vite 8 用 rolldown，会提示 chunk > 500KB 警告（可接受，或按需拆包）。
+- `three/addons/*` 导出别名**存在**（package.json exports 已映射到 `examples/jsm/*`），
+  `import { OrbitControls } from 'three/addons/controls/OrbitControls.js'` 可用。
+- 可用后处理模块已确认存在：`EffectComposer / RenderPass / UnrealBloomPass / OutputPass /
+  SSAOPass / GTAOPass / BokehPass / OutlinePass / ShaderPass / FXAAPass / SMAAPass`；
+  环境光可用 `RoomEnvironment`（`three/addons/environments/RoomEnvironment.js`）。
+- 关键 API 符号在 0.186.1 中确认存在：`outputColorSpace`、`SRGBColorSpace`、
+  `AgXToneMapping` / `ACESFilmicToneMapping` / `NeutralToneMapping`、`ColorManagement`、
+  `PMREMGenerator.fromScene`、`PCFSoftShadowMap` / `VSMShadowMap`。
+- **无头 Chromium**：WebGL2 可用，但 renderer 是 **SwiftShader 软件渲染**（maxTex 8192）；
+  **headful Chrome** 走真实 GPU：`ANGLE Metal Renderer: Apple M5 Max`，maxTex 16384，
+  支持各向异性过滤 → **视觉验收与帧率采样必须用 headful Chrome**，无头只做逻辑冒烟。
+- 字体：本机**没有独立 `PingFang.ttc` 文件**，但 `Hiragino Sans GB` / `STHeiti` / `Songti` 均在。
+  中文字体栈须写成具名栈（PingFang SC → Hiragino Sans GB → Microsoft YaHei → Noto Sans CJK SC → sans-serif），
+  不写「系统默认」。
+- **踩坑记录（实现期必须避开）**：若 `PMREMGenerator.fromScene()` 取自**空场景**，
+  环境光为零，垂直于主光源的墙面会全黑并与深色背景融为一体，画面看起来像「模型塌了」。
+  → IBL 必须来自**程序化天空**，不能来自空场景。
+
 ## 冲突与处理
 
 
