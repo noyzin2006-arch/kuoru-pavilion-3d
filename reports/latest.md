@@ -26,7 +26,7 @@
 |---|---|
 | 仓库 | https://github.com/noyzin2006-arch/kuoru-pavilion-3d |
 | 分支 | main |
-| 被测 commit | `fc1c2e6c8becda8cf93be3edf3efdbfd4122a8bf`（fc1c2e6） |
+| 被测 commit | `f0c104b013ab2ac2442c7fb0eb2e5177fe495e69`（f0c104b） |
 | 产物 | `dist/`（构建产物不入源码仓，规则见 .gitignore；本机保留用于部署与本地预览） |
 
 ## 4. 建筑关键尺寸与柱网测试结果
@@ -213,12 +213,13 @@ layout-shift（排除 hadRecentInput）；帧率连续采样 30 秒。
 | 7 | 镜头预设过渡只推进 ~15ms 就停 | e2e 落点误差 0.19m | 动画时钟误用 rAF 帧时间戳（可能早于 applyPreset 时刻）→ 改用 `performance.now()` |
 | 8 | 相机在极端连续操作下可能越界 | e2e 72 步旋转用例 | 相机守卫：非有限值或与目标重合即回滚到最后一次有效状态，并在每次手写操作后约束边界 |
 | 9 | 移动端详情 sheet 挡住下方控件 | e2e 超时定位 | 详情改模态（遮罩 + Esc），并给出「模态期间焦点锁在 sheet 内」的行为 |
+| 10 | 有头浏览器请求 /favicon.ico 得到 404 → 一条 console error（无头测试不触发，是匿名实测脚本抓到的） | 公开 URL 匿名实测 | 新增 public/favicon.svg 并在页面显式引用，同源零额外请求 |
 
 ## 12. 公开 URL 与匿名访问确认
 
 - 公开 URL：（未发布）
 - 匿名访问方式：新开无登录状态的浏览器 context，直接 GET 公开 URL
-- 确认时间：2026-10-24T19:13:46.851Z
+- 确认时间：2026-10-24T19:18:14.030Z
 - 确认项：HTTP 200、首屏可见模型、可拖拽旋转、无 console error、无跨源请求
 
 > 未取得公开托管授权，按规划案 §8 标记 `BLOCKED_PUBLIC_URL`；本机预览与源码仓库已可用。
