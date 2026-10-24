@@ -5,3 +5,26 @@
 
 Running 20 tests using 1 worker
 
+  ✓   1 [desktop-1440] › e2e/exhibit.spec.js:69:3 › 廓如亭展厅 › AC02 加载无错误、无跨源请求、画布完成真实绘制 (6.3s)
+  ✓   2 [desktop-1440] › e2e/exhibit.spec.js:100:3 › 廓如亭展厅 › AC03 模型几何自检：月台/柱高/三圈四十柱/双檐八脊 (7.2s)
+  ✓   3 [desktop-1440] › e2e/exhibit.spec.js:124:3 › 廓如亭展厅 › AC04 交互全链路：时刻/季节/镜头/热点/分解/剖切/比例人/重置 (21.4s)
+  ✓   4 [desktop-1440] › e2e/exhibit.spec.js:177:3 › 廓如亭展厅 › 360° 连续旋转 ≥72 步，相机与目标不产生 NaN、不越界 (17.8s)
+  ✓   5 [desktop-1440] › e2e/exhibit.spec.js:194:3 › 廓如亭展厅 › 镜头预设过渡完成后落点误差 < 0.1m (16.5s)
+  ✓   6 [desktop-1440] › e2e/exhibit.spec.js:218:3 › 廓如亭展厅 › PMREM 连续切换 100 次，纹理与几何数量不线性上涨 (47.4s)
+  ✓   7 [desktop-1440] › e2e/exhibit.spec.js:238:3 › 廓如亭展厅 › 5 档视口文档均不横向溢出 (11.7s)
+  ✓   8 [desktop-1440] › e2e/exhibit.spec.js:251:3 › 廓如亭展厅 › AC05 无障碍：Tab 可达、焦点可见、控件有可读名称、键盘能转视角 (7.3s)
+  ✓   9 [desktop-1440] › e2e/exhibit.spec.js:288:3 › 廓如亭展厅 › 降级：WebGL2 不可用时给出文字结构说明而非空白画布 (1.6s)
+  ✓  10 [desktop-1440] › e2e/exhibit.spec.js:303:3 › 廓如亭展厅 › 降级：sessionStorage 写入异常不阻断渲染 (4.5s)
+  ✓  11 [mobile-375] › e2e/exhibit.spec.js:69:3 › 廓如亭展厅 › AC02 加载无错误、无跨源请求、画布完成真实绘制 (6.3s)
+  ✓  12 [mobile-375] › e2e/exhibit.spec.js:100:3 › 廓如亭展厅 › AC03 模型几何自检：月台/柱高/三圈四十柱/双檐八脊 (6.3s)
+  ✓  13 [mobile-375] › e2e/exhibit.spec.js:124:3 › 廓如亭展厅 › AC04 交互全链路：时刻/季节/镜头/热点/分解/剖切/比例人/重置 (16.7s)
+  ✓  14 [mobile-375] › e2e/exhibit.spec.js:177:3 › 廓如亭展厅 › 360° 连续旋转 ≥72 步，相机与目标不产生 NaN、不越界 (11.2s)
+  ✓  15 [mobile-375] › e2e/exhibit.spec.js:194:3 › 廓如亭展厅 › 镜头预设过渡完成后落点误差 < 0.1m (14.7s)
+  ✓  16 [mobile-375] › e2e/exhibit.spec.js:218:3 › 廓如亭展厅 › PMREM 连续切换 100 次，纹理与几何数量不线性上涨 (47.5s)
+  ✓  17 [mobile-375] › e2e/exhibit.spec.js:238:3 › 廓如亭展厅 › 5 档视口文档均不横向溢出 (10.4s)
+  ✓  18 [mobile-375] › e2e/exhibit.spec.js:251:3 › 廓如亭展厅 › AC05 无障碍：Tab 可达、焦点可见、控件有可读名称、键盘能转视角 (7.1s)
+  ✓  19 [mobile-375] › e2e/exhibit.spec.js:288:3 › 廓如亭展厅 › 降级：WebGL2 不可用时给出文字结构说明而非空白画布 (1.6s)
+  ✓  20 [mobile-375] › e2e/exhibit.spec.js:303:3 › 廓如亭展厅 › 降级：sessionStorage 写入异常不阻断渲染 (4.4s)
+
+  20 passed (4.5m)
+npm run test:e2e 退出码: 0

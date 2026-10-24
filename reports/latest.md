@@ -26,7 +26,7 @@
 |---|---|
 | 仓库 | https://github.com/noyzin2006-arch/kuoru-pavilion-3d |
 | 分支 | main |
-| 被测 commit | `391a9c1797a9cd0b27e874e1a09b8e6e012a4455`（391a9c1） |
+| 被测 commit | `fc1c2e6c8becda8cf93be3edf3efdbfd4122a8bf`（fc1c2e6） |
 | 产物 | `dist/`（构建产物不入源码仓，规则见 .gitignore；本机保留用于部署与本地预览） |
 
 ## 4. 建筑关键尺寸与柱网测试结果
@@ -74,8 +74,8 @@ node tools/capture-visual.mjs --dist dist --out reports/visual
 | 命令 | 退出码 | 通过 / 失败 | 输出文件 |
 |---|---|---|---|
 | `npm test`（node:test） | 0 | 38 / 0（共 38 条） | `reports/test-node.txt` |
-| `npm run build`（vite 8.3.5） | 0 | 产物 JS 645.85 kB（gzip — kB）、CSS 15.23 kB | `reports/build.txt` |
-| `npm run test:e2e`（Playwright，2 视口 × 10 用例） | — | 20 / — | `reports/test-e2e.txt` |
+| `npm run build`（vite 8.3.5） | 0 | 产物 JS 645.85 kB（gzip 171.29 kB）、CSS 15.23 kB | `reports/build.txt` |
+| `npm run test:e2e`（Playwright，2 视口 × 10 用例） | 0 | 20 / 0 | `reports/test-e2e.txt` |
 | `node tools/perf.mjs` | — | 见第 8 节 | `reports/perf.json` |
 | `node tools/capture-visual.mjs` | — | 截图 11 张 | `reports/visual/shots.json` |
 | `npm run verify:contrast`（令牌真实配对） | — | 21 / 0 | `tools/contrast-pairs.json` |
@@ -218,7 +218,7 @@ layout-shift（排除 hadRecentInput）；帧率连续采样 30 秒。
 
 - 公开 URL：（未发布）
 - 匿名访问方式：新开无登录状态的浏览器 context，直接 GET 公开 URL
-- 确认时间：2026-10-24T19:08:38.123Z
+- 确认时间：2026-10-24T19:13:46.851Z
 - 确认项：HTTP 200、首屏可见模型、可拖拽旋转、无 console error、无跨源请求
 
 > 未取得公开托管授权，按规划案 §8 标记 `BLOCKED_PUBLIC_URL`；本机预览与源码仓库已可用。
