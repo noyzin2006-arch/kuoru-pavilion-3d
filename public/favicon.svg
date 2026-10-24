@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="廓如亭">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#243f4a" />
+      <stop offset="1" stop-color="#14262c" />
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="12" fill="url(#sky)" />
+  <!-- 八角重檐攒尖顶：上檐 + 下檐 -->
+  <path d="M32 9 L45 21 H19 Z" fill="#9a958c" />
+  <path d="M32 11 L42.5 21 H21.5 Z" fill="#b3ada2" />
+  <path d="M32 7.5 L45.5 21.5 H18.5 Z" fill="none" stroke="#1b1b1b" stroke-width="1.4" stroke-linejoin="round" />
+  <path d="M10 31 L32 17 L54 31 Z" fill="#8d887f" />
+  <path d="M32 18.5 L51 31.5 H13 Z" fill="#a8a296" />
+  <path d="M9 31.5 L32 16.5 L55 31.5 Z" fill="none" stroke="#1b1b1b" stroke-width="1.6" stroke-linejoin="round" />
+  <!-- 宝顶 -->
+  <circle cx="32" cy="8" r="2.6" fill="#c9c3b8" stroke="#1b1b1b" stroke-width="1" />
+  <!-- 朱红柱与台基 -->
+  <rect x="19" y="31.5" width="3.2" height="13" fill="#9e3b31" />
+  <rect x="30.4" y="31.5" width="3.2" height="13" fill="#9e3b31" />
+  <rect x="41.8" y="31.5" width="3.2" height="13" fill="#9e3b31" />
+  <rect x="12" y="45" width="40" height="4" rx="1" fill="#a79d89" stroke="#1b1b1b" stroke-width="1" />
+  <rect x="9" y="49.5" width="46" height="6" rx="1.5" fill="#8a8378" stroke="#1b1b1b" stroke-width="1" />
+</svg>
