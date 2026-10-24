@@ -1,0 +1,83 @@
+{
+  "base": "http://127.0.0.1:62319/",
+  "widths": [
+    {
+      "width": 375,
+      "title": "廓如亭 · 结构复原｜颐和园实时三维数字复原",
+      "lang": "zh-CN",
+      "canvases": [
+        {
+          "w": 349,
+          "h": 540,
+          "cssW": 349,
+          "cssH": 540
+        }
+      ],
+      "webglAlive": [
+        true
+      ],
+      "consoleErrorCount": 0,
+      "consoleErrors": [],
+      "pageErrorCount": 0,
+      "pageErrors": [],
+      "externalRequestCount": 0,
+      "externalRequests": [],
+      "failedRequestCount": 0,
+      "failedRequests": [],
+      "horizontalScroll": false,
+      "scrollW": 375,
+      "clientW": 375,
+      "buttons": 34,
+      "buttonsWithoutName": 0,
+      "imagesWithoutAlt": 0,
+      "focusableCount": 46,
+      "tabDistinctTargets": 20,
+      "screenshot": "reports/visual/viewport-375.png"
+    },
+    {
+      "width": 1440,
+      "title": "廓如亭 · 结构复原｜颐和园实时三维数字复原",
+      "lang": "zh-CN",
+      "canvases": [
+        {
+          "w": 766,
+          "h": 594,
+          "cssW": 766,
+          "cssH": 594
+        }
+      ],
+      "webglAlive": [
+        true
+      ],
+      "consoleErrorCount": 0,
+      "consoleErrors": [],
+      "pageErrorCount": 0,
+      "pageErrors": [],
+      "externalRequestCount": 0,
+      "externalRequests": [],
+      "failedRequestCount": 0,
+      "failedRequests": [],
+      "horizontalScroll": false,
+      "scrollW": 1440,
+      "clientW": 1440,
+      "buttons": 34,
+      "buttonsWithoutName": 0,
+      "imagesWithoutAlt": 0,
+      "focusableCount": 46,
+      "tabDistinctTargets": 20,
+      "screenshot": "reports/visual/viewport-1440.png"
+    }
+  ],
+  "checks": [
+    {
+      "width": 375,
+      "pass": true,
+      "failures": []
+    },
+    {
+      "width": 1440,
+      "pass": true,
+      "failures": []
+    }
+  ]
+}

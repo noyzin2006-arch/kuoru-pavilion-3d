@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light" />
+    <meta
+      name="description"
+      content="颐和园廓如亭实时三维数字复原：八角重檐攒尖亭的程序化三维重建，非激光扫描成果。"
+    />
+    <title>廓如亭 · 结构复原｜颐和园实时三维数字复原</title>
+    <script type="module" crossorigin src="./assets/index-Bcv-9v7l.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-oln0QoyY.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#scene-region">跳到三维场景</a>
+
+    <header class="topbar" id="topbar">
+      <div class="topbar__title">
+        <h1>廓如亭 · 结构复原</h1>
+        <p class="topbar__subtitle">颐和园实时三维数字复原 / 非激光扫描</p>
+      </div>
+      <div class="topbar__actions">
+        <button
+          class="icon-button"
+          id="help-button"
+          type="button"
+          aria-label="打开使用帮助与导览"
+          aria-haspopup="dialog"
+        ></button>
+      </div>
+    </header>
+
+    <main class="layout">
+      <!-- 左：复原依据 -->
+      <aside class="panel panel--sources" aria-labelledby="sources-heading">
+        <h2 id="sources-heading" class="panel__heading">复原依据</h2>
+        <p class="panel__note">
+          本页面为<b>程序化复原</b>，非文物测绘或激光扫描成果。标注分为 H（史料交叉核实）、I（依营造则例推算）、
+          S（示意性构图）三级。
+        </p>
+        <details class="source-details">
+          <summary class="source-details__summary">资料来源与口径</summary>
+          <div class="source-details__body" id="source-body"></div>
+        </details>
+      </aside>
+
+      <!-- 中：三维场景 -->
+      <section class="stage" id="scene-region" aria-label="廓如亭三维场景">
+        <div class="stage__canvas-wrap">
+          <canvas
+            id="scene-canvas"
+            class="stage__canvas"
+            tabindex="0"
+            aria-label="廓如亭三维场景，可用方向键旋转、加减号缩放"
+          ></canvas>
+
+          <div class="stage__overlay" id="stage-overlay" aria-hidden="false"></div>
+
+          <div class="stage__hotspots" id="hotspot-layer"></div>
+
+          <div class="stage__viewtools" id="viewtools" role="group" aria-label="视角工具"></div>
+
+          <div class="stage__status" id="stage-status" role="status" aria-live="polite"></div>
+        </div>
+      </section>
+
+      <!-- 右：操作 -->
+      <aside class="panel panel--controls" aria-labelledby="controls-heading">
+        <h2 id="controls-heading" class="panel__heading">场景控制</h2>
+        <div id="controls-root"></div>
+      </aside>
+    </main>
+
+    <!-- 构件详情（桌面右侧 / 移动底部 sheet） -->
+    <aside
+      class="detail-panel"
+      id="detail-panel"
+      aria-labelledby="detail-heading"
+      hidden
+    >
+      <div class="detail-panel__head">
+        <h2 id="detail-heading">构件详情</h2>
+        <button class="icon-button" id="detail-close" type="button" aria-label="关闭构件详情"></button>
+      </div>
+      <div class="detail-panel__body" id="detail-body"></div>
+    </aside>
+
+    <!-- 首次引导 -->
+    <div class="dialog-scrim" id="guide-scrim" hidden></div>
+    <div
+      class="dialog"
+      id="guide-dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="guide-title"
+      hidden
+    ></div>
+
+    <!-- 轻提示 -->
+    <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+    <!-- WebGL 不可用时的文字替代 -->
+    <noscript>
+      <p class="noscript">本页三维展示需要 JavaScript。廓如亭为颐和园东堤上的八角重檐攒尖亭，
+      平面八边形、每面显三间，内外三圈共 40 根柱（24 圆柱、16 方柱），柱高 4.29 米，
+      亭周有八方月台（边长 11.1 米）。</p>
+    </noscript>
+
+  </body>
+</html>

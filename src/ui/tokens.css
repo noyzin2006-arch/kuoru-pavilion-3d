@@ -1,0 +1,161 @@
+/**
+ * KRT-001 · 唯一 UI 令牌文件
+ *
+ * 数值逐条来自规划案 §3.1。规则：
+ *  - 全站 UI 颜色只能引用本文件的令牌；组件里不许出现裸 hex。
+ *  - 阴影色只允许出现在本文件（--shadow-*）。
+ *  - 场景内 3D 物体色不写在这里，另见 src/scene/materials.js 的场景色板。
+ *  - 字体全部为系统字体，不下载远程字体（零外部请求）。
+ */
+
+:root {
+  /* ---------------------------------------------------------- 背景 */
+  --bg-page: #f3f0e8;
+  --bg-panel: #fffcf5;
+  --bg-raised: #ffffff;
+  --bg-dark: #192b2b;
+
+  /* ---------------------------------------------------------- 文字 */
+  --text-main: #172b2a;
+  --text-sub: #405453;
+  --text-quiet: #526563;
+  --text-on-dark: #ffffff;
+
+  /* ---------------------------------------------------------- 边框 */
+  /* 原 #8B9994 对面板底仅 2.89:1、对页底 2.60:1，低于 A2「控件边框 ≥3:1」。
+     按规划案 §3.1「不合格改令牌而非改测试」，在保持同一灰绿色相的前提下暗化到 #7C8A85
+     （面板底 3.51:1 / 页底 3.16:1）。见 reports/latest.md 的偏离记录。 */
+  --border: #7c8a85;
+  --border-active: #526563;
+
+  /* ---------------------------------------------------------- 强调 */
+  --accent: #73511f;
+  --accent-hover: #573b16;
+  --accent-soft: #f2e6cc;
+  --focus: #185a8a;
+
+  /* ---------------------------------------------------------- 语义 */
+  --success: #236443;
+  --warning: #865600;
+  --danger: #a12f32;
+  --information: #185a8a;
+
+  /* ---------------------------------------------------------- 字体 */
+  --font-zh: "Noto Serif CJK SC", "Songti SC", "STSong", serif;
+  --font-ui: "Noto Sans CJK SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-west: Georgia, "Times New Roman", serif;
+
+  /* ---------------------------------------------------------- 字阶（比例约 1.25） */
+  --text-xs: 12px;
+  --text-xs-line: 18px;
+  --text-xs-weight: 500;
+  --text-xs-tracking: 0.02em;
+
+  --text-sm: 14px;
+  --text-sm-line: 21px;
+  --text-sm-weight: 500;
+  --text-sm-tracking: 0;
+
+  --text-body: 16px;
+  --text-body-line: 26px;
+  --text-body-weight: 400;
+  --text-body-tracking: 0;
+
+  --text-lg: 20px;
+  --text-lg-line: 28px;
+  --text-lg-weight: 600;
+  --text-lg-tracking: -0.01em;
+
+  --text-xl: 25px;
+  --text-xl-line: 32px;
+  --text-xl-weight: 600;
+  --text-xl-tracking: -0.02em;
+
+  --text-2xl: 31px;
+  --text-2xl-line: 39px;
+  --text-2xl-weight: 600;
+  --text-2xl-tracking: -0.025em;
+
+  --text-3xl: 39px;
+  --text-3xl-line: 47px;
+  --text-3xl-weight: 600;
+  --text-3xl-tracking: -0.03em;
+
+  /* ---------------------------------------------------------- 间距（4px 基准） */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-24: 96px;
+
+  /* ---------------------------------------------------------- 圆角 */
+  --radius-xs: 4px;
+  --radius-control: 8px;
+  --radius-card: 12px;
+  --radius-dialog: 16px;
+  --radius-round: 999px;
+
+  /* ---------------------------------------------------------- 描边与焦点 */
+  --line: 1px solid var(--border);
+  --focus-ring: 3px solid var(--focus);
+
+  /* ---------------------------------------------------------- 阴影（色值只允许出现在这里） */
+  --shadow-0: none;
+  --shadow-1: 0 2px 8px #172b2a14;
+  --shadow-2: 0 8px 24px #172b2a20;
+  --shadow-3: 0 16px 40px #172b2a30;
+  --shadow-4: 0 24px 64px #172b2a40;
+
+  /* ---------------------------------------------------------- 层级 */
+  --z-scene: 0;
+  --z-hud: 10;
+  --z-panel: 20;
+  --z-menu: 30;
+  --z-dialog: 40;
+  --z-toast: 50;
+
+  /* ---------------------------------------------------------- 动效 */
+  --motion-fast: 120ms;
+  --motion-normal: 220ms;
+  --motion-enter: 320ms;
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* ---------------------------------------------------------- 布局常量 */
+  --topbar-height: 64px;
+  --topbar-height-mobile: 56px;
+  --panel-left: 240px;
+  --panel-left-md: 160px;
+  --panel-right: 320px;
+  --panel-right-md: 280px;
+  --content-max: 1200px;
+  --control-min-size: 44px;
+}
+
+/* 焦点环统一口径：3px 实心蓝环 + 2px 外扩 */
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: 2px;
+}
+
+/* 动效减弱：全部 0ms（规划案 §4 微交互） */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --motion-fast: 0ms;
+    --motion-normal: 0ms;
+    --motion-enter: 0ms;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0ms !important;
+    scroll-behavior: auto !important;
+  }
+}

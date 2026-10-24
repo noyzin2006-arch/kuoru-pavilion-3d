@@ -159,6 +159,16 @@ async function main() {
     await page.goto(base, { waitUntil: 'load', timeout: 60000 });
     await page.waitForTimeout(2500); // 给首屏渲染/动画留时间
 
+    // 首次访问会弹出导览对话框（焦点陷阱），先关掉再测键盘可达性
+    const guideOpen = await page.evaluate(() => {
+      const d = document.getElementById('guide-dialog');
+      return d ? !d.hidden : false;
+    });
+    if (guideOpen) {
+      await page.click('#guide-dialog .button--quiet').catch(() => {});
+      await page.waitForTimeout(400);
+    }
+
     const dom = await page.evaluate(() => {
       const canvases = [...document.querySelectorAll('canvas')].map((c) => ({
         w: c.width, h: c.height,
